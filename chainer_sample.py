@@ -51,13 +51,18 @@ def main():
     optimizer = optimizers.SGD()
     optimizer.setup(model)
 
-    for i in range(10000):
-        x = Variable(xtrain)
-        y = Variable(ytrain)
-        model.cleargrads()
-        loss = model(x, y)
-        loss.backward()
-        optimizer.update()
+    #minibatch
+    n = 75
+    bs = 25
+    for j in range(5000):
+        sffindex = np.random.permutation(n)
+        for i in range(0, n, bs):
+            x = Variable(xtrain[xtrain[sffindex[i:(i+bs) if (i+bs) < n else n] ] ] )
+            y = Variable(ytrain[ytrain[sffindex[i:(i+bs) if (i+bs) < n else n] ] ] )
+            model.cleargrads()
+            loss = model(x, y)
+            loss.backward()
+            optimizer.update()
 
     xt = Variable(xtest)
     yt = model.fwd(xt)

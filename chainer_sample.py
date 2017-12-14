@@ -57,13 +57,13 @@ def main():
     for j in range(5000):
         sffindex = np.random.permutation(n)
         for i in range(0, n, bs):
-            x = Variable(xtrain[xtrain[sffindex[i:(i+bs) if (i+bs) < n else n] ] ] )
-            y = Variable(ytrain[ytrain[sffindex[i:(i+bs) if (i+bs) < n else n] ] ] )
+            x = Variable(xtrain[sffindex[i : (i + bs) if (i + bs) < n else n] ] )
+            y = Variable(ytrain[sffindex[i : (i + bs) if (i + bs) < n else n] ] )
             model.cleargrads()
             loss = model(x, y)
             loss.backward()
             optimizer.update()
-
+    
     xt = Variable(xtest)
     yt = model.fwd(xt)
     ans = yt.data
